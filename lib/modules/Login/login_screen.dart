@@ -29,7 +29,7 @@ class LogInScreen extends StatelessWidget {
               children: [
                 const Image(
                   image: NetworkImage(
-                      'https://cdn-icons-png.flaticon.com/512/5087/5087579.png'),
+                      'https://cdn3.iconfinder.com/data/icons/login-6/512/LOGIN-10-512.png'),
                   width: 200,
                   height: 200,
                 ),
