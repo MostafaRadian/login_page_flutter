@@ -7,7 +7,8 @@ import '../../shared/components/components.dart';
 class LogInScreen extends StatelessWidget {
   var emailController = TextEditingController();
   var passController = TextEditingController();
-
+  var formKey = GlobalKey<FormState>();
+  bool isHidden = false;
   LogInScreen({super.key});
 
   @override
@@ -27,76 +28,81 @@ class LogInScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: SizedBox(
             width: double.infinity,
-            child: Column(
-              children: [
-                const Image(
-                  image: NetworkImage(
-                      'https://cdn3.iconfinder.com/data/icons/login-6/512/LOGIN-10-512.png'),
-                  width: 200,
-                  height: 200,
-                ),
-                const Text(
-                  "Sign in",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.indigoAccent),
-                ),
-                const SizedBox(height: 20),
-                // ignore: sized_box_for_whitespace
-                Container(
-                  width: 300,
-                  child: TextFormField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                          labelText: "Email",
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.email),
-                          prefixIconColor: Colors.indigoAccent)),
-                ),
-                const SizedBox(height: 20),
-                // ignore: sized_box_for_whitespace
-                Container(
-                  width: 300,
-                  child: TextFormField(
-                    controller: passController,
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        labelText: "Password",
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.lock),
-                        prefixIconColor: Colors.indigoAccent),
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  const Image(
+                    image: NetworkImage(
+                        'https://cdn3.iconfinder.com/data/icons/login-6/512/LOGIN-10-512.png'),
+                    width: 180,
+                    height: 180,
                   ),
-                ),
-                const SizedBox(height: 30),
-                // ignore: sized_box_for_whitespace
-                DefaultButton(
-                  function: () {
-                    print(emailController.text);
-                    print(passController.text);
-                  },
-                ),
-                const SizedBox(height: 10),
+                  const Text(
+                    "Sign in",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.indigoAccent),
+                  ),
+                  const SizedBox(height: 20),
+                  // ignore: sized_box_for_whitespace
+                  DefaultFormField(
+                    emailController,
+                    TextInputType.emailAddress,
+                    (value) {
+                      if (value!.isEmpty) {
+                        return "Email adress must not be empty";
+                      }
+                      return null;
+                    },
+                    "E-mail",
+                    Colors.indigoAccent,
+                    const Icon(Icons.email),
+                  ),
+                  const SizedBox(height: 20),
+                  // ignore: sized_box_for_whitespace
+                  DefaultFormField(
+                      passController, TextInputType.visiblePassword, (value) {
+                    if (value!.isEmpty) {
+                      return "Password adress must not be empty";
+                    }
+                    return null;
+                  }, "Password", Colors.indigoAccent, const Icon(Icons.lock),
+                      hidden: isHidden,
+                      suffixIcon: Icons.remove_red_eye,
+                      function: () {}),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Don't have an account?",
-                      style: TextStyle(fontSize: 15),
-                      textAlign: TextAlign.center,
-                    ),
-                    TextButton(
-                        onPressed: () {},
-                        child: const Text("Register Now",
-                            style: TextStyle(
-                                color: Colors.indigoAccent, fontSize: 15),
-                            textAlign: TextAlign.center))
-                  ],
-                )
-              ],
+                  const SizedBox(height: 30),
+                  // ignore: sized_box_for_whitespace
+                  DefaultButton(
+                      function: () {
+                        if (formKey.currentState!.validate()) {
+                          print(emailController.text);
+                          print(passController.text);
+                        }
+                      },
+                      color: Colors.indigoAccent,
+                      width: 250),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an account?",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                      TextButton(
+                          onPressed: () {},
+                          child: const Text("Register Now",
+                              style: TextStyle(
+                                  color: Colors.indigoAccent, fontSize: 15),
+                              textAlign: TextAlign.center))
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
