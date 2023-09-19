@@ -4,12 +4,22 @@ import 'package:flutter/material.dart';
 
 import '../../shared/components/components.dart';
 
-class LogInScreen extends StatelessWidget {
-  var emailController = TextEditingController();
-  var passController = TextEditingController();
-  var formKey = GlobalKey<FormState>();
-  bool isHidden = false;
+class LogInScreen extends StatefulWidget {
   LogInScreen({super.key});
+
+  @override
+  State<LogInScreen> createState() => LogInScreenState();
+}
+
+class LogInScreenState extends State<LogInScreen> {
+  var emailController = TextEditingController();
+
+  var passController = TextEditingController();
+
+  var formKey = GlobalKey<FormState>();
+
+  bool isHidden = false;
+  IconData sufIcon = Icons.visibility_off;
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +73,27 @@ class LogInScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   // ignore: sized_box_for_whitespace
                   DefaultFormField(
-                      passController, TextInputType.visiblePassword, (value) {
-                    if (value!.isEmpty) {
-                      return "Password adress must not be empty";
-                    }
-                    return null;
-                  }, "Password", Colors.indigoAccent, const Icon(Icons.lock),
-                      hidden: isHidden,
-                      suffixIcon: Icons.remove_red_eye,
-                      function: () {}),
+                    passController,
+                    TextInputType.visiblePassword,
+                    (value) {
+                      if (value!.isEmpty) {
+                        return "Password adress must not be empty";
+                      }
+                      return null;
+                    },
+                    "Password",
+                    Colors.indigoAccent,
+                    const Icon(Icons.lock),
+                    hidden: isHidden,
+                    suffixIcon: sufIcon,
+                    function: () {
+                      setState(() {
+                        isHidden = !isHidden;
+                        sufIcon =
+                            isHidden ? Icons.visibility_off : Icons.visibility;
+                      });
+                    },
+                  ),
 
                   const SizedBox(height: 30),
                   // ignore: sized_box_for_whitespace
